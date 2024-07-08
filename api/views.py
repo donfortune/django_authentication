@@ -1,5 +1,6 @@
 
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -9,6 +10,7 @@ from .serializers import *
 from rest_framework_simplejwt.tokens import AccessToken
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def CreateUser(request):
     if request.method == 'POST':
         serializer = Userserializer(data=request.data)
