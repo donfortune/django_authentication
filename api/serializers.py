@@ -40,19 +40,25 @@ from rest_framework_simplejwt.authentication import default_user_authentication_
 #         user.save()
        
 #         return user
-    
+
 class Userserializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["userId", "firstName", "lastName", "email", "phone", "password"]
-        extra_kwargs = {"password": {"write_only": True}}
+        extra_kwargs = {
+            "password": {"write_only": True},
+            "firstName": {"required": True},
+            "lastName": {"required": True},
+            "email": {"required": True},
+            "phone": {"required": False},
+        }
 
     def create(self, validated_data):
         user = User(
-            firstName=validated_data.get('firstName'),
-            lastName=validated_data.get('lastName'),
-            email=validated_data.get('email'),
-            phone=validated_data.get('phone', None)  # Optional field
+            firstName=validated_data['firstName'],
+            lastName=validated_data['lastName'],
+            email=validated_data['email'],
+            phone=validated_data.get('phone')  # Optional field
         )
         user.set_password(validated_data['password'])
         user.save()

@@ -1,6 +1,6 @@
 
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -9,8 +9,38 @@ from .models import User
 from .serializers import *
 from rest_framework_simplejwt.tokens import AccessToken
 
+# @api_view(['POST'])
+# def CreateUser(request):
+#     if request.method == 'POST':
+#         serializer = Userserializer(data=request.data)
+#         if serializer.is_valid():
+#             try:
+#                 user = serializer.save()
+#                 access_token = AccessToken.for_user(user)
+#                 res = {
+#                     "status": "success",
+#                     "message": "Registration Successful",
+#                     "data": {
+#                         'accessToken': str(access_token),
+#                         "user": serializer.data
+#                     }
+#                 }
+#                 return Response(res, status=status.HTTP_201_CREATED)
+#             except Exception as e:
+#                 res = {
+#                     "status": "Bad request",
+#                     "message": "Registration unsuccessful",
+#                     "statusCode": 400
+#                 }
+#                 return Response(res, status=status.HTTP_400_BAD_REQUEST)
+#         else:
+#             errors = []
+#             for field, error_list in serializer.errors.items():
+#                 for error in error_list:
+#                     errors.append({"field": field, "message": str(error)})
+#             return Response({"errors": errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 @api_view(['POST'])
-@permission_classes([AllowAny])
 def CreateUser(request):
     if request.method == 'POST':
         serializer = Userserializer(data=request.data)
@@ -40,7 +70,6 @@ def CreateUser(request):
                 for error in error_list:
                     errors.append({"field": field, "message": str(error)})
             return Response({"errors": errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-
 
 @api_view(['POST'])
 def UserLogin(request):
