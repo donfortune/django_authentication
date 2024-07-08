@@ -13,34 +13,55 @@ from rest_framework_simplejwt.authentication import default_user_authentication_
 
 
     
+# class Userserializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ["userId","firstName","lastName","email","phone","password"]
+#         extra_kwargs = {"password":{"write_only": True}}
+  
+
+#     def create(self, validated_data):
+#         for fieldname,field in self.fields.items():
+#             if fieldname not in validated_data:
+#                 validated_data[f'{fieldname}'] = None
+#         user = User(
+#             firstName = validated_data['firstName'],
+#             lastName = validated_data['lastName'],
+#             email = validated_data['email'],
+#             phone = validated_data['phone']
+#         )
+#         user.set_password(validated_data['password'])
+       
+#         organisation = Organization.objects.create(name = f"{user.firstName}'s Organisation")
+        
+#         user.save() 
+
+#         user.organizations.add(organisation)
+#         user.save()
+       
+#         return user
+    
 class Userserializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["userId","firstName","lastName","email","phone","password"]
-        extra_kwargs = {"password":{"write_only": True}}
-  
+        fields = ["userId", "firstName", "lastName", "email", "phone", "password"]
+        extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
-        for fieldname,field in self.fields.items():
-            if fieldname not in validated_data:
-                validated_data[f'{fieldname}'] = None
         user = User(
-            firstName = validated_data['firstName'],
-            lastName = validated_data['lastName'],
-            email = validated_data['email'],
-            phone = validated_data['phone']
+            firstName=validated_data.get('firstName'),
+            lastName=validated_data.get('lastName'),
+            email=validated_data.get('email'),
+            phone=validated_data.get('phone', None)  # Optional field
         )
         user.set_password(validated_data['password'])
-       
-        organisation = Organization.objects.create(name = f"{user.firstName}'s Organisation")
-        
-        user.save() 
+        user.save()
 
+        organisation = Organization.objects.create(name=f"{user.firstName}'s Organisation")
         user.organizations.add(organisation)
         user.save()
        
         return user
-    
 
 class LoginSerializer(TokenObtainSerializer):
     token_class = AccessToken
