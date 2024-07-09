@@ -199,7 +199,6 @@ def CreateOrganization(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def AddUserToOrganization(request, org_id):
     serializer = AddorganizationSerializer(data=request.data)
     if serializer.is_valid():
