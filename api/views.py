@@ -199,7 +199,7 @@ def CreateOrganization(request):
 
 
 @api_view(['POST'])
-def AddUserToOrganization(request, org_id):
+def AddUserToOrganization(request, pk):
     serializer = AddorganizationSerializer(data=request.data)
     if serializer.is_valid():
         user_id = serializer.validated_data['userId']
@@ -214,8 +214,7 @@ def AddUserToOrganization(request, org_id):
             return Response(res, status=status.HTTP_404_NOT_FOUND)
 
         try:
-            #organization = request.user.organizations.get(pk=pk)
-             organization = request.user.organizations.get(orgId=org_id)
+            organization = request.user.organizations.get(pk=pk)
         except Organization.DoesNotExist:
             return Response({"error": "Organization not found"}, status=status.HTTP_404_NOT_FOUND)
 
