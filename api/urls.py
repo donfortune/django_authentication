@@ -9,6 +9,7 @@ urlpatterns = [
     path('api/users/<str:pk>', GetUser),
     path('api/organisations', Getorganizations),
     path('api/organisations/<uuid:org_id>', GetOrganization),
-    path('api/organisations/<int:pk>/users', AddUserToOrganization),
+    #path('api/organisations/<int:pk>/users', AddUserToOrganization),
+    path('api/organisations/<uuid:org_id>/users', AddUserToOrganization),
     path('api/organisations/create', CreateOrganization),
 ]
